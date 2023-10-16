@@ -1,0 +1,30 @@
+version: '3'
+services:
+  # Node.js
+  node_app:
+    image: node:18.17.0 
+    container_name: my_node_app
+    working_dir: /app     
+    volumes:
+      - ./app:/app        # Volum local : Volum contenidor
+    ports:
+      - "3000:8000"       # Port exposat : Port contenidor
+    command: npm start
+    links:                # Enllaçar amb el servei mongodb
+      - "mongodb"
+
+  # MongoDB
+  mongodb:
+    image: mongo:4.4 
+    container_name: my_mongodb
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017" 
+    environment:                          # Variables d'entorn    
+      MONGO_INITDB_ROOT_USERNAME: root    # Usuari
+      MONGO_INITDB_ROOT_PASSWORD: example # Contrasenya
+
+volumes:
+  mongodb_data:
+  app_data:
